@@ -1,5 +1,5 @@
 use velopack::*;
-use anyhow::Result;
+use anyhow::{Ok, Result};
 
 #[flutter_rust_bridge::frb(init)]
 pub fn init_app() {
@@ -10,6 +10,11 @@ pub fn init_app() {
 fn create_update_manager(url: &str) -> Result<UpdateManager, Error> {
     let source = sources::HttpSource::new(url);
     UpdateManager::new(source, None, None)
+}
+
+pub fn current_version() -> Result<String> {
+    let um = create_update_manager("")?;
+    Ok(um.get_current_version_as_string())
 }
 
 pub fn is_update_available(url: String) -> Result<bool> {
